@@ -21,7 +21,7 @@ configs:
       parameters:
         description: 'NextJS + AWS'
         topics:
-        - StackOfStacks
+        - stackofstack
 
   - branches:   
     - name: main
