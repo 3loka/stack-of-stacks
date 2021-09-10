@@ -12,7 +12,9 @@ inputs:
     default: '.github/workflows/stack-init.yaml'                                 
     description: Select your stack
     validvalues:                                       
-    - 'test'
+    - '.github/workflows/stack-init.yaml'                                       
+    - '.github/workflows/stack-init1.yaml'                                       
+    - '.github/workflows/stack-init2.yaml'
 
 configs:
   - repo-metadata:
