@@ -11,10 +11,10 @@ inputs:
 
   inputs:                                                
   - name: Stack                                
-    default: '.github/workflows/stack-init.yaml'                                  
+    default: .github/workflows/stack-init.yaml                                 
     description: Select your stack
     validvalues:                                       
-    - 'Deploy NextJS to Github Pages'
+    - 'test'
 
 configs:
   - repo-metadata:
