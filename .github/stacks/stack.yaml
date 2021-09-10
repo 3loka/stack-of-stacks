@@ -8,10 +8,8 @@ branding:
   color: 'blue'
 
 inputs:
-
-  inputs:                                                
   - name: Stack                                
-    default: .github/workflows/stack-init.yaml                                 
+    default: '.github/workflows/stack-init.yaml'                                 
     description: Select your stack
     validvalues:                                       
     - 'test'
@@ -20,9 +18,6 @@ configs:
   - repo-metadata:
       parameters:
         description: 'NextJS + AWS'
-        secrets: 
-          - name: Stack
-            value: {{inputs.Stack}}
         topics:
         - StackOfStacks
 
