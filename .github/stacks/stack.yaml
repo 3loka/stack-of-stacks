@@ -39,4 +39,4 @@ github-apps:
 - name: AWS
 
 init:
-- uses: {{inputs.Stack}}
+- uses: '.github/workflows/stack-init.yaml'
