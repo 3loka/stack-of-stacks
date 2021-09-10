@@ -1,0 +1,42 @@
+version: 0.1.0   
+
+name: A stack to deploy nextjs site to AWS S3
+description: A stack to deploy nextjs site to AWS S3
+
+branding:
+  icon: 'aws.svg'
+  color: 'blue'
+
+inputs:
+
+  inputs:                                                
+  - name: Stack                                
+    default: '.github/workflows/stack-init.yaml'                                  
+    description: Select your stack
+    validvalues:                                       
+    - 'Deploy NextJS to Github Pages'
+
+configs:
+  - repo-metadata:
+      parameters:
+        description: 'NextJS + AWS'
+        topics:
+        - StackOfStacks
+
+  - branches:   
+    - name: main
+      parameters:
+        dismiss-stale-reviews: true                      
+        required-approving-review-count: 1
+        require-code-owner-reviews: true
+
+  - environments:                                        
+    - name: production
+      parameters:
+        protected-branches: true
+
+github-apps:
+- name: AWS
+
+init:
+- uses: {{inputs.Stack}}

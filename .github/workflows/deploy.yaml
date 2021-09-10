@@ -1,0 +1,50 @@
+name: "deploy"
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy: 
+    runs-on: ubuntu-latest
+    name: "Deploy nextjs app to AWS S3"
+    
+    steps:
+      - uses: actions/checkout@v2
+          with:
+            ref: development
+            persist-credentials: false
+      
+      - name: use node.js v14
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+          check-latest: true
+          registry-url: https://registry.npmjs.org/
+      
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run build 
+          npm run test
+
+      - name: Configure AWS credentials from Test account
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+        
+      - name: Creating a bucket in s3
+        if: "contains(${{ secrets.USE_EXISTING_BUCKET }}, 'false')"
+        run : aws s3 mb s3://${{ secrets.AWS_S3_BUCKET_NAME }} 
+      - name: Updaing bucket policy
+        if: "contains(${{ secrets.USE_EXISTING_BUCKET }}, 'false')"
+        run: aws s3api put-bucket-policy --bucket ${{ secrets.AWS_S3_BUCKET_NAME }} --policy '{"Statement":[{"Effect":"Allow","Principal":"*","Action":"s3:GetObject","Resource":"arn:aws:s3:::${{ secrets.AWS_S3_BUCKET_NAME }}/*"}]}'
+       
+      - name: Uploading files to s3
+        run: aws s3 sync ./next s3://${{ secrets.AWS_S3_BUCKET_NAME }}/ 
+
+      - name: setting index and error files
+        run: aws s3 website s3://${{ secrets.AWS_S3_BUCKET_NAME }}/ --index-document index.html --error-document 404.html
+
+      - run:  echo "Web app is installed and you can access here http://${{ secrets.AWS_S3_BUCKET_NAME }}.s3-website. ${{ secrets.AWS_REGION }}.amazonaws.com"
