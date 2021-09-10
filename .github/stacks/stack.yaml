@@ -20,6 +20,9 @@ configs:
   - repo-metadata:
       parameters:
         description: 'NextJS + AWS'
+        secrets: 
+          - name: Stack
+            value: {{inputs.Stack}}
         topics:
         - StackOfStacks
 
@@ -39,4 +42,4 @@ github-apps:
 - name: AWS
 
 init:
-- uses: '.github/workflows/stack-init.yaml'
+- uses:  {{inputs.Stack}}
